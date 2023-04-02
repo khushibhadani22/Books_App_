@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "93545421800",
+    "project_id": "fir-books-22",
+    "storage_bucket": "fir-books-22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:93545421800:android:0a0b8fc442cecd31fde25d",
+        "android_client_info": {
+          "package_name": "com.kb101.firebase_books"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "93545421800-eropu0dl1ohr5gipjdeq1lr7o1nike1l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kb101.firebase_books",
+            "certificate_hash": "c332111e9582a1837ff2ad5f66e10d9bc6d8c6c8"
+          }
+        },
+        {
+          "client_id": "93545421800-s5139hbglgnofm658mojq4ikrpakk2k0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwgCiPFqnyPQwWTREpwDqtFLWKe_V3LE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "93545421800-9fkc9um6q75l2ljqtk2jimd6ectpb5qq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
