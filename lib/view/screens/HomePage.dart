@@ -89,13 +89,17 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   color: Colors.blue,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(
-                        'assets/image/google.png',
-                        height: 100,
-                        width: 100,
+                      Center(
+                        child: Image.asset(
+                          'assets/image/google.png',
+                          height: 100,
+                          width: 100,
+                        ),
                       ),
-                      Text("Author :- Khushi bhadani")
+                      const Text(" Author :-")
                     ],
                   ),
                 ),
