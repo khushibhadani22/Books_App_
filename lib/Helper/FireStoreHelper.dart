@@ -11,7 +11,10 @@ class StoreHelper {
     collectionReference = fireStore.collection('books');
   }
 
-  Future<void> addNote({required String book, required String author}) async {
+  Future<void> addBook(
+      {required String book,
+      required String author,
+      required String image}) async {
     connectCollection();
     String bId = DateTime.now().millisecondsSinceEpoch.toString();
     await collectionReference!
@@ -20,6 +23,7 @@ class StoreHelper {
           'id': bId,
           'book': book,
           'author': author,
+          'image': image,
         })
         .then(
           (value) => print("books is add...."),
@@ -27,13 +31,13 @@ class StoreHelper {
         .catchError((error) => print("$error"));
   }
 
-  Stream<QuerySnapshot<Object?>> getNotes() {
+  Stream<QuerySnapshot<Object?>> getBooks() {
     connectCollection();
 
     return collectionReference!.snapshots();
   }
 
-  editUser({required String id, required Map<Object, Object> data}) {
+  editBooks({required String id, required Map<Object, Object> data}) {
     connectCollection();
 
     collectionReference!
@@ -43,7 +47,7 @@ class StoreHelper {
         .catchError((error) => print(error));
   }
 
-  removeNotes({required String id}) {
+  removeBooks({required String id}) {
     connectCollection();
 
     collectionReference!
