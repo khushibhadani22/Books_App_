@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:firebase_books/Helper/FireStoreHelper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -300,10 +301,58 @@ class _HomePageState extends State<HomePage> {
               } else if (snapshot.hasData) {
                 data = snapshot.data!.docs;
                 return ListView.builder(
-                  itemBuilder: (context, i) {
-                    return Text(data[i]['book']);
-                  },
                   itemCount: data.length,
+                  itemBuilder: (context, i) {
+                    return StaggeredGrid.count(
+                      crossAxisCount: 6,
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 3,
+                      children: [
+                        StaggeredGridTile.count(
+                            crossAxisCellCount: 3,
+                            mainAxisCellCount: 4,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushNamed('details');
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.all(15),
+                                padding: const EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 3, color: Colors.blue.shade900)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.asset('assets/image/bookLogo.png'),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          data[i]['book'],
+                                          style: TextStyle(
+                                              color: Colors.blue.shade900,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          data[i]['author'],
+                                          style: TextStyle(
+                                              color: Colors.blue.shade900,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ))
+                      ],
+                    );
+                  },
                 );
               } else {
                 return Center(
