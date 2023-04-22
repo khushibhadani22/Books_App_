@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_books/Helper/FireStorageHelper.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class StoreHelper {
   StoreHelper._();
@@ -17,13 +19,18 @@ class StoreHelper {
       required String image}) async {
     connectCollection();
     String bId = DateTime.now().millisecondsSinceEpoch.toString();
+    FirebaseStorageHelper.firebaseStorageHelper
+        .uploadFile(imagePath: image, bId: bId);
+
+    String imagePath =
+        "https://firebasestorage.googleapis.com/v0/b/fir-books-22.appspot.com/o/$bId.jpg?alt=media&token=1e43258f-27ee-49d4-b94b-b88a35485e56";
     await collectionReference!
         .doc(bId)
         .set({
           'id': bId,
           'book': book,
           'author': author,
-          'image': image,
+          'image': imagePath,
         })
         .then(
           (value) => print("books is add...."),

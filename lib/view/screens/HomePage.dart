@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
+
   void onTapItem(int i) {
     setState(() {
       index = i;
@@ -188,25 +189,23 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(
                             height: 20,
                           ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue.shade900),
-                              onPressed: () async {
-                                // final ImagePicker picker = ImagePicker();
-                                //
-                                // // XFile? qFile =
-                                // //     await picker.pickImage(source: ImageSource.camera);
-                                //
-                                // XFile? xFile = await picker.pickImage(
-                                //     source: ImageSource.gallery);
-                                //
-                                // // image = await qFile!.readAsBytes();
-                                // image = await xFile!.readAsBytes();
-                              },
-                              child: const Text(
-                                "PICK IMAGE",
-                                style: TextStyle(color: Colors.white),
-                              )),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.camera,
+                                    color: Colors.blue.shade900,
+                                  )),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.photo_album_outlined,
+                                    color: Colors.blue.shade900,
+                                  )),
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -236,6 +235,13 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () async {
                             if (insertFormKey.currentState!.validate()) {
                               insertFormKey.currentState!.save();
+
+                              await StoreHelper.storeHelper.addBook(
+                                  book: book!,
+                                  author: authorName!,
+                                  image: image!.toString());
+                              image = null;
+                              Navigator.of(context).pop();
 
                               // Student s1 = Student(
                               //     name: name!,
@@ -300,58 +306,72 @@ class _HomePageState extends State<HomePage> {
                 );
               } else if (snapshot.hasData) {
                 data = snapshot.data!.docs;
-                return ListView.builder(
+                return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
                   itemCount: data.length,
                   itemBuilder: (context, i) {
-                    return StaggeredGrid.count(
-                      crossAxisCount: 6,
-                      crossAxisSpacing: 2,
-                      mainAxisSpacing: 3,
-                      children: [
-                        StaggeredGridTile.count(
-                            crossAxisCellCount: 3,
-                            mainAxisCellCount: 4,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushNamed('details');
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.all(15),
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 3, color: Colors.blue.shade900)),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Image.asset('assets/image/bookLogo.png'),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          data[i]['book'],
-                                          style: TextStyle(
-                                              color: Colors.blue.shade900,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          data[i]['author'],
-                                          style: TextStyle(
-                                              color: Colors.blue.shade900,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ))
-                      ],
+                    return Card(
+                      elevation: 0,
+                      child: ListView(
+                        children: [
+                          CircleAvatar(
+                            radius: 70,
+                            foregroundImage: NetworkImage(data[i]['image']),
+                          ),
+                          Text(data[i]['book']),
+                        ],
+                      ),
                     );
+                    //   StaggeredGrid.count(
+                    //   crossAxisCount: 3,
+                    //   crossAxisSpacing: 2,
+                    //   mainAxisSpacing: 3,
+                    //   children: [
+                    //     StaggeredGridTile.count(
+                    //         crossAxisCellCount: 3,
+                    //         mainAxisCellCount: 4,
+                    //         child: GestureDetector(
+                    //           onTap: () {
+                    //             Navigator.of(context).pushNamed('details');
+                    //           },
+                    //           child: Container(
+                    //             margin: const EdgeInsets.all(15),
+                    //             padding: const EdgeInsets.all(6),
+                    //             decoration: BoxDecoration(
+                    //                 border: Border.all(
+                    //                     width: 3, color: Colors.blue.shade900)),
+                    //             child: Column(
+                    //               mainAxisAlignment: MainAxisAlignment.start,
+                    //               crossAxisAlignment: CrossAxisAlignment.start,
+                    //               children: [
+                    //                 Image.asset('assets/image/bookLogo.png'),
+                    //                 Column(
+                    //                   mainAxisAlignment:
+                    //                       MainAxisAlignment.start,
+                    //                   crossAxisAlignment:
+                    //                       CrossAxisAlignment.start,
+                    //                   children: [
+                    //                     Text(
+                    //                       data[i]['book'],
+                    //                       style: TextStyle(
+                    //                           color: Colors.blue.shade900,
+                    //                           fontWeight: FontWeight.bold),
+                    //                     ),
+                    //                     Text(
+                    //                       data[i]['author'],
+                    //                       style: TextStyle(
+                    //                           color: Colors.blue.shade900,
+                    //                           fontWeight: FontWeight.w500),
+                    //                     ),
+                    //                   ],
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ))
+                    //   ],
+                    // );
                   },
                 );
               } else {
