@@ -1,8 +1,7 @@
 import 'dart:typed_data';
-
 import 'package:firebase_books/Helper/FireStoreHelper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,8 +23,9 @@ class _HomePageState extends State<HomePage> {
 
   String? book;
   String? authorName;
-  Uint8List? image;
+  String? image;
   GlobalKey<FormState> insertFormKey = GlobalKey();
+  final ImagePicker picker = ImagePicker();
 
   TextEditingController bookController = TextEditingController();
   TextEditingController authorController = TextEditingController();
@@ -137,6 +137,42 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () async {
+                                    XFile? file = await picker.pickImage(
+                                        source: ImageSource.camera);
+                                    if (file != null) {
+                                      setState(() {
+                                        image = file.path;
+                                      });
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.camera,
+                                    color: Colors.blue.shade900,
+                                  )),
+                              IconButton(
+                                  onPressed: () async {
+                                    XFile? file = await picker.pickImage(
+                                        source: ImageSource.gallery);
+                                    if (file != null) {
+                                      setState(() {
+                                        image = file.path;
+                                      });
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.photo_album_outlined,
+                                    color: Colors.blue.shade900,
+                                  )),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           TextFormField(
                             validator: (val) {
                               if (val!.isEmpty) {
@@ -186,26 +222,6 @@ class _HomePageState extends State<HomePage> {
                                     TextStyle(color: Colors.blue.shade900),
                                 hintText: "Enter First Author Name..."),
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.camera,
-                                    color: Colors.blue.shade900,
-                                  )),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.photo_album_outlined,
-                                    color: Colors.blue.shade900,
-                                  )),
-                            ],
-                          )
                         ],
                       ),
                     ),
@@ -242,33 +258,6 @@ class _HomePageState extends State<HomePage> {
                                   image: image!.toString());
                               image = null;
                               Navigator.of(context).pop();
-
-                              // Student s1 = Student(
-                              //     name: name!,
-                              //     age: age!,
-                              //     course: course!,
-                              //     image: image);
-                              // int res = await DBHelper.dbHelper.insert(data: s1);
-                              //  if (res > 0) {
-                              //    setState(() {
-                              //    //  getAllStudents = DBHelper.dbHelper.fetchAllStudents();
-                              //    });
-                              //    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              //        behavior: SnackBarBehavior.floating,
-                              //        backgroundColor: Colors.indigo.shade900,
-                              //        content: const Text(
-                              //          "Record inserted successfully...",
-                              //          style: TextStyle(color: Colors.white),
-                              //        )));
-                              //  } else {
-                              //    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              //        behavior: SnackBarBehavior.floating,
-                              //        backgroundColor: Colors.white,
-                              //        content: Text(
-                              //          "Record insertion failed...",
-                              //          style: TextStyle(color: Colors.indigo.shade900),
-                              //        )));
-                              //  }
                               print("save all");
                             }
                             bookController.clear();
@@ -293,100 +282,96 @@ class _HomePageState extends State<HomePage> {
           },
           child: const Icon(Icons.add),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Center(
-            child: StreamBuilder(
-              stream: StoreHelper.storeHelper.getBooks(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      "Error :- ${snapshot.error} ",
-                      style: TextStyle(color: Colors.blue.shade900),
-                    ),
-                  );
-                } else if (snapshot.hasData) {
-                  data = snapshot.data!.docs;
-                  return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2),
-                    itemCount: data.length,
-                    itemBuilder: (context, i) {
-                      return Card(
-                        elevation: 0,
-                        child: ListView(
-                          children: [
-                            CircleAvatar(
-                              radius: 70,
-                              foregroundImage: NetworkImage(data[i]['image']),
-                            ),
-                            Text(data[i]['book']),
-                          ],
-                        ),
-                      );
-                      //   StaggeredGrid.count(
-                      //   crossAxisCount: 3,
-                      //   crossAxisSpacing: 2,
-                      //   mainAxisSpacing: 3,
-                      //   children: [
-                      //     StaggeredGridTile.count(
-                      //         crossAxisCellCount: 3,
-                      //         mainAxisCellCount: 4,
-                      //         child: GestureDetector(
-                      //           onTap: () {
-                      //             Navigator.of(context).pushNamed('details');
-                      //           },
-                      //           child: Container(
-                      //             margin: const EdgeInsets.all(15),
-                      //             padding: const EdgeInsets.all(6),
-                      //             decoration: BoxDecoration(
-                      //                 border: Border.all(
-                      //                     width: 3, color: Colors.blue.shade900)),
-                      //             child: Column(
-                      //               mainAxisAlignment: MainAxisAlignment.start,
-                      //               crossAxisAlignment: CrossAxisAlignment.start,
-                      //               children: [
-                      //                 Image.asset('assets/image/bookLogo.png'),
-                      //                 Column(
-                      //                   mainAxisAlignment:
-                      //                       MainAxisAlignment.start,
-                      //                   crossAxisAlignment:
-                      //                       CrossAxisAlignment.start,
-                      //                   children: [
-                      //                     Text(
-                      //                       data[i]['book'],
-                      //                       style: TextStyle(
-                      //                           color: Colors.blue.shade900,
-                      //                           fontWeight: FontWeight.bold),
-                      //                     ),
-                      //                     Text(
-                      //                       data[i]['author'],
-                      //                       style: TextStyle(
-                      //                           color: Colors.blue.shade900,
-                      //                           fontWeight: FontWeight.w500),
-                      //                     ),
-                      //                   ],
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           ),
-                      //         ))
-                      //   ],
-                      // );
-                    },
-                  );
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.blue.shade900,
-                      backgroundColor: Colors.blue.shade500,
-                    ),
-                  );
-                }
-              },
-            ),
+        body: Center(
+          child: StreamBuilder(
+            stream: StoreHelper.storeHelper.getBooks(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    "Error :- ${snapshot.error} ",
+                    style: TextStyle(color: Colors.blue.shade900),
+                  ),
+                );
+              } else if (snapshot.hasData) {
+                data = snapshot.data!.docs;
+                return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemCount: data.length,
+                  itemBuilder: (context, i) {
+                    return Card(
+                      elevation: 0,
+                      child: ListView(
+                        children: [
+                          CircleAvatar(
+                            radius: 70,
+                            foregroundImage: NetworkImage(data[i]['image']),
+                          ),
+                          Text(data[i]['book']),
+                        ],
+                      ),
+                    );
+                    //   StaggeredGrid.count(
+                    //   crossAxisCount: 3,
+                    //   crossAxisSpacing: 2,
+                    //   mainAxisSpacing: 3,
+                    //   children: [
+                    //     StaggeredGridTile.count(
+                    //         crossAxisCellCount: 3,
+                    //         mainAxisCellCount: 4,
+                    //         child: GestureDetector(
+                    //           onTap: () {
+                    //             Navigator.of(context).pushNamed('details');
+                    //           },
+                    //           child: Container(
+                    //             margin: const EdgeInsets.all(15),
+                    //             padding: const EdgeInsets.all(6),
+                    //             decoration: BoxDecoration(
+                    //                 border: Border.all(
+                    //                     width: 3, color: Colors.blue.shade900)),
+                    //             child: Column(
+                    //               mainAxisAlignment: MainAxisAlignment.start,
+                    //               crossAxisAlignment: CrossAxisAlignment.start,
+                    //               children: [
+                    //                 Image.asset('assets/image/bookLogo.png'),
+                    //                 Column(
+                    //                   mainAxisAlignment:
+                    //                       MainAxisAlignment.start,
+                    //                   crossAxisAlignment:
+                    //                       CrossAxisAlignment.start,
+                    //                   children: [
+                    //                     Text(
+                    //                       data[i]['book'],
+                    //                       style: TextStyle(
+                    //                           color: Colors.blue.shade900,
+                    //                           fontWeight: FontWeight.bold),
+                    //                     ),
+                    //                     Text(
+                    //                       data[i]['author'],
+                    //                       style: TextStyle(
+                    //                           color: Colors.blue.shade900,
+                    //                           fontWeight: FontWeight.w500),
+                    //                     ),
+                    //                   ],
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ))
+                    //   ],
+                    // );
+                  },
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.blue.shade900,
+                    backgroundColor: Colors.blue.shade500,
+                  ),
+                );
+              }
+            },
           ),
         ),
       ),

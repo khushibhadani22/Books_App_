@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_books/Helper/FireStorageHelper.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class StoreHelper {
   StoreHelper._();
@@ -23,7 +22,7 @@ class StoreHelper {
         .uploadFile(imagePath: image, bId: bId);
 
     String imagePath =
-        "https://firebasestorage.googleapis.com/v0/b/fir-books-22.appspot.com/o/food.jpg?alt=media&token=1e43258f-27ee-49d4-b94b-b88a35485e56";
+        "https://firebasestorage.googleapis.com/v0/b/fir-books-22.appspot.com/o/images%2F$bId.jpg?alt=media&token=1e43258f-27ee-49d4-b94b-b88a35485e56";
     await collectionReference!
         .doc(bId)
         .set({
