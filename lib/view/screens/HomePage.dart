@@ -293,96 +293,100 @@ class _HomePageState extends State<HomePage> {
           },
           child: const Icon(Icons.add),
         ),
-        body: Center(
-          child: StreamBuilder(
-            stream: StoreHelper.storeHelper.getBooks(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(
-                    "Error :- ${snapshot.error} ",
-                    style: TextStyle(color: Colors.blue.shade900),
-                  ),
-                );
-              } else if (snapshot.hasData) {
-                data = snapshot.data!.docs;
-                return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2),
-                  itemCount: data.length,
-                  itemBuilder: (context, i) {
-                    return Card(
-                      elevation: 0,
-                      child: ListView(
-                        children: [
-                          CircleAvatar(
-                            radius: 70,
-                            foregroundImage: NetworkImage(data[i]['image']),
-                          ),
-                          Text(data[i]['book']),
-                        ],
-                      ),
-                    );
-                    //   StaggeredGrid.count(
-                    //   crossAxisCount: 3,
-                    //   crossAxisSpacing: 2,
-                    //   mainAxisSpacing: 3,
-                    //   children: [
-                    //     StaggeredGridTile.count(
-                    //         crossAxisCellCount: 3,
-                    //         mainAxisCellCount: 4,
-                    //         child: GestureDetector(
-                    //           onTap: () {
-                    //             Navigator.of(context).pushNamed('details');
-                    //           },
-                    //           child: Container(
-                    //             margin: const EdgeInsets.all(15),
-                    //             padding: const EdgeInsets.all(6),
-                    //             decoration: BoxDecoration(
-                    //                 border: Border.all(
-                    //                     width: 3, color: Colors.blue.shade900)),
-                    //             child: Column(
-                    //               mainAxisAlignment: MainAxisAlignment.start,
-                    //               crossAxisAlignment: CrossAxisAlignment.start,
-                    //               children: [
-                    //                 Image.asset('assets/image/bookLogo.png'),
-                    //                 Column(
-                    //                   mainAxisAlignment:
-                    //                       MainAxisAlignment.start,
-                    //                   crossAxisAlignment:
-                    //                       CrossAxisAlignment.start,
-                    //                   children: [
-                    //                     Text(
-                    //                       data[i]['book'],
-                    //                       style: TextStyle(
-                    //                           color: Colors.blue.shade900,
-                    //                           fontWeight: FontWeight.bold),
-                    //                     ),
-                    //                     Text(
-                    //                       data[i]['author'],
-                    //                       style: TextStyle(
-                    //                           color: Colors.blue.shade900,
-                    //                           fontWeight: FontWeight.w500),
-                    //                     ),
-                    //                   ],
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         ))
-                    //   ],
-                    // );
-                  },
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.blue.shade900,
-                    backgroundColor: Colors.blue.shade500,
-                  ),
-                );
-              }
-            },
+        body: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Center(
+            child: StreamBuilder(
+              stream: StoreHelper.storeHelper.getBooks(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      "Error :- ${snapshot.error} ",
+                      style: TextStyle(color: Colors.blue.shade900),
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  data = snapshot.data!.docs;
+                  return GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                    itemCount: data.length,
+                    itemBuilder: (context, i) {
+                      return Card(
+                        elevation: 0,
+                        child: ListView(
+                          children: [
+                            CircleAvatar(
+                              radius: 70,
+                              foregroundImage: NetworkImage(data[i]['image']),
+                            ),
+                            Text(data[i]['book']),
+                          ],
+                        ),
+                      );
+                      //   StaggeredGrid.count(
+                      //   crossAxisCount: 3,
+                      //   crossAxisSpacing: 2,
+                      //   mainAxisSpacing: 3,
+                      //   children: [
+                      //     StaggeredGridTile.count(
+                      //         crossAxisCellCount: 3,
+                      //         mainAxisCellCount: 4,
+                      //         child: GestureDetector(
+                      //           onTap: () {
+                      //             Navigator.of(context).pushNamed('details');
+                      //           },
+                      //           child: Container(
+                      //             margin: const EdgeInsets.all(15),
+                      //             padding: const EdgeInsets.all(6),
+                      //             decoration: BoxDecoration(
+                      //                 border: Border.all(
+                      //                     width: 3, color: Colors.blue.shade900)),
+                      //             child: Column(
+                      //               mainAxisAlignment: MainAxisAlignment.start,
+                      //               crossAxisAlignment: CrossAxisAlignment.start,
+                      //               children: [
+                      //                 Image.asset('assets/image/bookLogo.png'),
+                      //                 Column(
+                      //                   mainAxisAlignment:
+                      //                       MainAxisAlignment.start,
+                      //                   crossAxisAlignment:
+                      //                       CrossAxisAlignment.start,
+                      //                   children: [
+                      //                     Text(
+                      //                       data[i]['book'],
+                      //                       style: TextStyle(
+                      //                           color: Colors.blue.shade900,
+                      //                           fontWeight: FontWeight.bold),
+                      //                     ),
+                      //                     Text(
+                      //                       data[i]['author'],
+                      //                       style: TextStyle(
+                      //                           color: Colors.blue.shade900,
+                      //                           fontWeight: FontWeight.w500),
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ))
+                      //   ],
+                      // );
+                    },
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.blue.shade900,
+                      backgroundColor: Colors.blue.shade500,
+                    ),
+                  );
+                }
+              },
+            ),
           ),
         ),
       ),

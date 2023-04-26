@@ -23,7 +23,7 @@ class StoreHelper {
         .uploadFile(imagePath: image, bId: bId);
 
     String imagePath =
-        "https://firebasestorage.googleapis.com/v0/b/fir-books-22.appspot.com/o/$bId.jpg?alt=media&token=1e43258f-27ee-49d4-b94b-b88a35485e56";
+        "https://firebasestorage.googleapis.com/v0/b/fir-books-22.appspot.com/o/food.jpg?alt=media&token=1e43258f-27ee-49d4-b94b-b88a35485e56";
     await collectionReference!
         .doc(bId)
         .set({
