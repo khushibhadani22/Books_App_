@@ -322,7 +322,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 )),
             Expanded(
-                flex: 8,
+                flex: 9,
                 child: Container(
                   height: double.infinity,
                   width: double.infinity,
@@ -330,89 +330,130 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                       borderRadius:
                           BorderRadius.only(topLeft: Radius.circular(80))),
-                  child: StreamBuilder(
-                    stream: StoreHelper.storeHelper.getBooks(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text(
-                            "Error :- ${snapshot.error} ",
-                            style: TextStyle(color: Colors.blue.shade900),
-                          ),
-                        );
-                      } else if (snapshot.hasData) {
-                        data = snapshot.data!.docs;
-                        return GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          itemCount: data.length,
-                          itemBuilder: (context, i) {
-                            return Align(
-                              alignment: Alignment.bottomRight,
-                              child: Padding(
-                                padding: const EdgeInsets.all(30),
-                                child: Container(
-                                  height: 350,
-                                  width: 350,
-                                  color: Colors.pink,
+                  child: Column(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(80)),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const SizedBox(
+                                  width: 2,
                                 ),
-
-                                // ListView(
-                                //   children: [
-                                //     CircleAvatar(
-                                //       radius: 70,
-                                //       foregroundImage:
-                                //           NetworkImage(data[i]['image']),
-                                //     ),
-                                //     Row(
-                                //       children: [
-                                //         const Text(
-                                //           "BOOK :-",
-                                //           style: TextStyle(
-                                //               color: Colors.black,
-                                //               fontWeight: FontWeight.bold),
-                                //         ),
-                                //         Text(
-                                //           data[i]['book'],
-                                //           style: const TextStyle(
-                                //               color: Colors.black,
-                                //               fontWeight: FontWeight.bold),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //     Row(
-                                //       children: [
-                                //         const Text(
-                                //           "AUTHOR :-",
-                                //           style: TextStyle(
-                                //               color: Colors.grey,
-                                //               fontWeight: FontWeight.bold),
-                                //         ),
-                                //         Text(
-                                //           data[i]['book'],
-                                //           style: const TextStyle(
-                                //               color: Colors.grey,
-                                //               fontWeight: FontWeight.bold),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ],
-                                // ),
-                              ),
-                            );
-                          },
-                        );
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.blue.shade900,
-                            backgroundColor: Colors.blue.shade500,
-                          ),
-                        );
-                      }
-                    },
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blue.shade900),
+                                    onPressed: () {},
+                                    child: const Text(
+                                      "NEW",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blue.shade900),
+                                    onPressed: () {},
+                                    child: const Text(
+                                      "POPULAR",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blue.shade900),
+                                    onPressed: () {},
+                                    child: const Text(
+                                      "TRADING",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                              ],
+                            ),
+                          )),
+                      Expanded(
+                          flex: 5,
+                          child: SizedBox(
+                            height: double.infinity,
+                            width: double.infinity,
+                            child: StreamBuilder(
+                              stream: StoreHelper.storeHelper.getBooks(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text(
+                                      "Error :- ${snapshot.error} ",
+                                      style: TextStyle(
+                                          color: Colors.blue.shade900),
+                                    ),
+                                  );
+                                } else if (snapshot.hasData) {
+                                  data = snapshot.data!.docs;
+                                  return ListView.builder(
+                                    itemBuilder: (cnt, i) {
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Row(
+                                              children: [
+                                                const SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Container(
+                                                  height: 220,
+                                                  width: 160,
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              data[i]['image']),
+                                                          fit: BoxFit.cover),
+                                                      color: Colors.blue,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                ),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        "Book :- ${data[i]['book']}"),
+                                                    Text(
+                                                        "Author :- ${data[i]['author']}"),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                    itemCount: data.length,
+                                  );
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.blue.shade900,
+                                      backgroundColor: Colors.blue.shade500,
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ))
+                    ],
                   ),
+
+                  //
                 )),
           ],
         ),
