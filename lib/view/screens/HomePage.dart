@@ -309,7 +309,8 @@ class _HomePageState extends State<HomePage> {
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
-                                  borderSide: BorderSide(color: Colors.white)),
+                                  borderSide:
+                                      const BorderSide(color: Colors.white)),
                               hintText: "Search...",
                               hintStyle: const TextStyle(color: Colors.white),
                               prefixIcon: const Icon(
